@@ -8,7 +8,7 @@ load_dotenv()
 db = mysql.connector.connect(
     database=os.getenv('DB_URL'),
     host=os.getenv('DB_HOST'),
-    user=os.getenv('DB_USERNAME'),
+    user=os.getenv('DB_USER'),
     password=os.getenv('DB_PASSWORD')
 )
 
@@ -23,10 +23,10 @@ mycursor = db.cursor()
 #                   )'''
 
 insert = "INSERT INTO Player (Name, RiotID, LP, UserRank) VALUES (%s, %s, %s, %s)"
-delete = "DELETE FROM Player WHERE Name = 'steohany'"
 val = ("steohany", "steohany#ant", 50, RankEnum.Rank.DIAMOND.value)
+delete = "DELETE FROM Player WHERE Name = 'steohany'"
 
-# mycursor.execute(insert, val)
+# mycursor.execute(delete)
 # db.commit()
 
 # tables = mycursor.fetchall()
