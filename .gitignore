@@ -2,4 +2,5 @@
 venv
 .env
 
+/data/dbconnector-test.py
 /test.py
