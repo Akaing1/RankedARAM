@@ -52,11 +52,19 @@ class DBOperations:
 
     def getUserData(self, ctx):
 
-        print(self.SELECT % str(ctx.author))
         try:
             self.cursor.execute(self.SELECT % str(ctx.author))
             userData = self.cursor.fetchall()
             return userData
+        except UserAlreadyExistsException:
+            print('User does not exist')
+        return 'No data found for user'
+
+    def getLP(self, user):
+        try:
+            self.cursor.execute(self.SELECT % user)
+            userData = self.cursor.fetchall()
+            return userData[0][2]
         except UserAlreadyExistsException:
             print('User does not exist')
         return 'No data found for user'

@@ -1,8 +1,8 @@
 
-def getLPfromDB(user) -> int:
-    print(user)
-    return 0
+
+def getLPFromDB(user, db) -> int:
+    return db.getLP(user)
 
 
 def getLPFromUser(ctx, db) -> str:
-    return f'{ctx.author.mention}, you have {getLPfromDB(ctx.author)}LP'
+    return f'{ctx.author.mention}, you have {getLPFromDB(str(ctx.author), db)}LP'
