@@ -33,8 +33,13 @@ async def remove(ctx):
 
 
 @bot.command()
+async def getData(ctx):
+    await ctx.send(db.getUserData(ctx))
+
+
+@bot.command()
 async def getLP(ctx):
-    await ctx.send(getLPFromUser(ctx))
+    await ctx.send(getLPFromUser(ctx, db))
 
 
 @bot.command()

@@ -5,7 +5,6 @@ import mysql.connector
 from dotenv import load_dotenv
 
 from enums import RankEnum
-import exceptions
 from exceptions.UserAlreadyExistsException import UserAlreadyExistsException
 
 load_dotenv()
@@ -15,6 +14,7 @@ class DBOperations:
     RANK = RankEnum.Rank
     INSERT = "INSERT INTO Player (Name, RiotID, LP, UserRank) VALUES (%s, %s, %s, %s)"
     DELETE = "DELETE FROM Player WHERE Name = '%s'"
+    SELECT = "SELECT * FROM Player WHERE Name = '%s'"
 
     def __init__(self):
         self.dbURL = os.getenv('DB_URL')
@@ -42,7 +42,6 @@ class DBOperations:
 
     def removeUser(self, ctx) -> bool:
 
-        print(self.DELETE % str(ctx.author))
         try:
             self.cursor.execute(self.DELETE % str(ctx.author))
             self.db.commit()
@@ -51,6 +50,13 @@ class DBOperations:
             print('User does not exist')
         return False
 
+    def getUserData(self, ctx):
 
-    def getUserData(self):
-        pass
+        print(self.SELECT % str(ctx.author))
+        try:
+            self.cursor.execute(self.SELECT % str(ctx.author))
+            userData = self.cursor.fetchall()
+            return userData
+        except UserAlreadyExistsException:
+            print('User does not exist')
+        return 'No data found for user'
