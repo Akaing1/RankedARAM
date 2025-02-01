@@ -4,9 +4,9 @@ import mysql
 import mysql.connector
 from dotenv import load_dotenv
 
-from Enums import RankEnum
-import Exceptions
-from Exceptions.UserAlreadyExistsException import UserAlreadyExistsException
+from enums import RankEnum
+import exceptions
+from exceptions.UserAlreadyExistsException import UserAlreadyExistsException
 
 load_dotenv()
 
