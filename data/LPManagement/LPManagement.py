@@ -9,4 +9,4 @@ def getLPFromUser(interaction, db) -> str:
 
 
 def updateLPinDB(interaction, db, wins) -> bool:
-    return db.updateLP(str(interaction.user), 15*wins)
+    return db.updateLP(str(interaction.user), getLPFromDB(interaction.user, db) + 15*wins)
