@@ -1,11 +1,8 @@
 import asyncio
 
 import discord
-import os
-from dotenv import load_dotenv
 from discord.ext import commands
 
-from commands.getPoints import *
 from data.dbOperations import *
 
 bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())

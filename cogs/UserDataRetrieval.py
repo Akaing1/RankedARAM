@@ -1,7 +1,6 @@
-import discord
 from discord.ext import commands
 
-from commands.getPoints import *
+from data.getPoints import *
 from data.dbOperations import *
 
 db = DBOperations()
