@@ -15,6 +15,7 @@ class DBOperations:
     INSERT = "INSERT INTO Player (Name, RiotID, LP, UserRank) VALUES (%s, %s, %s, %s)"
     DELETE = "DELETE FROM Player WHERE Name = '%s'"
     SELECT = "SELECT * FROM Player WHERE Name = '%s'"
+    UPDATE = "UPDATE Player SET LP = %s WHERE Name = '%s'"
 
     def __init__(self):
         self.dbURL = os.getenv('DB_URL')
@@ -68,3 +69,12 @@ class DBOperations:
         except UserAlreadyExistsException:
             print('User does not exist')
         return 'No data found for user'
+
+    def updateLP(self, user, lp) -> bool:
+        try:
+            self.cursor.execute(self.UPDATE % (lp, user))
+            self.db.commit()
+            return True
+        except UserAlreadyExistsException:
+            print('User does not exist')
+        return False

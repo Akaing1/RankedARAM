@@ -1,7 +1,7 @@
 from discord import app_commands
 from discord.ext import commands
 
-from data.getPoints import *
+from data.LPManagement.LPManagement import *
 from data.database.dbOperations import *
 
 db = DBOperations()
