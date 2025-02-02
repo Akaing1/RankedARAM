@@ -15,36 +15,16 @@ botToken = os.getenv('DISCORD_TOKEN')
 async def on_ready():
     print("Booted up")
 
-
-# @bot.command()
-# async def register(ctx):
-#     if db.registerUser(ctx, 'Zaphkiel#stf'):
-#         await ctx.send(f"{ctx.author.mention} has been registered successfully!")
-#     else:
-#         await ctx.send(f"{ctx.author.mention} there was an issue registering you.")
-#
-#
-# @bot.command()
-# async def remove(ctx):
-#     if db.removeUser(ctx):
-#         await ctx.send(f"{ctx.author.mention} has been deleted successfully!")
-#     else:
-#         await ctx.send(f"{ctx.author.mention} there was an issue removing you.")
+    try:
+        synced_commands = await bot.tree.sync()
+        print(f"Synced {len(synced_commands)} commands.")
+    except Exception as e:
+        print("An error with syncing application commands has occurred: ", e)
 
 
-# @bot.command()
-# async def getData(ctx):
-#     await ctx.send(db.getUserData(ctx))
-#
-#
-# @bot.command()
-# async def LP(ctx):
-#     await ctx.send(getLPFromUser(ctx, db))
-
-
-@bot.command()
-async def test(ctx):
-    await ctx.send(f"test, {ctx.author.mention}")
+@bot.tree.command(name="test", description="test")
+async def test(interaction: discord.Interaction):
+    await interaction.response.send_message(f"{interaction.user.mention} test")
 
 
 async def load():

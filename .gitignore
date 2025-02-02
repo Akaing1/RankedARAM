@@ -3,4 +3,5 @@ venv
 .env
 
 /data/database/dbconnector-test.py
+/data/riotData/riotData-test.py
 /test.py

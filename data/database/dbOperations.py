@@ -29,9 +29,9 @@ class DBOperations:
         )
         self.cursor = self.db.cursor()
 
-    def registerUser(self, ctx, riotId) -> bool:
+    def registerUser(self, interaction, riotId) -> bool:
 
-        val = (str(ctx.author), riotId, 0, self.RANK.IRON.value)
+        val = (str(interaction.user), riotId, 0, self.RANK.IRON.value)
         try:
             self.cursor.execute(self.INSERT, val)
             self.db.commit()
@@ -40,20 +40,20 @@ class DBOperations:
             print('User already exists')
         return False
 
-    def removeUser(self, ctx) -> bool:
+    def removeUser(self, interaction) -> bool:
 
         try:
-            self.cursor.execute(self.DELETE % str(ctx.author))
+            self.cursor.execute(self.DELETE % str(interaction.user))
             self.db.commit()
             return True
         except UserAlreadyExistsException:
             print('User does not exist')
         return False
 
-    def getUserData(self, ctx):
+    def getUserData(self, interaction):
 
         try:
-            self.cursor.execute(self.SELECT % str(ctx.author))
+            self.cursor.execute(self.SELECT % str(interaction.user))
             userData = self.cursor.fetchall()
             return userData
         except UserAlreadyExistsException:

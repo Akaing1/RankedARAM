@@ -1,3 +1,4 @@
+from discord import app_commands
 from discord.ext import commands
 
 from data.getPoints import *
@@ -15,13 +16,13 @@ class UserDataRetrieval(commands.Cog):
     async def on_ready(self):
         print("Data ready to be retrieved!")
 
-    @commands.command()
-    async def getData(self, ctx):
-        await ctx.send(db.getUserData(ctx))
+    @app_commands.command(name="get_data", description="gets user data from db")
+    async def getData(self, interaction):
+        await interaction.response.send_message(db.getUserData(interaction))
 
-    @commands.command()
-    async def LP(self, ctx):
-        await ctx.send(getLPFromUser(ctx, db))
+    @app_commands.command(name="lp", description="gets user current LP status")
+    async def LP(self, interaction):
+        await interaction.response.send_message(getLPFromUser(interaction, db))
 
 
 async def setup(bot):
