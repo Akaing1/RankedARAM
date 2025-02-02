@@ -1,5 +1,5 @@
 from discord.ext import commands
-from data.dbOperations import DBOperations
+from data.database.dbOperations import DBOperations
 
 db = DBOperations()
 

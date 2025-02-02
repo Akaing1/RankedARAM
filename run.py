@@ -3,7 +3,7 @@ import asyncio
 import discord
 from discord.ext import commands
 
-from data.dbOperations import *
+from data.database.dbOperations import *
 
 bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
 load_dotenv()
