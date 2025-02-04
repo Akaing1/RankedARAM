@@ -4,24 +4,37 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-API_KEY = os.getenv('RIOT_API_KEY')
-
 
 class RiotData:
-    ACCOUNT_DATA_V1_BY_IGN = 'https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s?api_key='
 
     def __init__(self):
-        self.API_KEY = os.getenv('RIOT_API_KEY')
+
+        self.__ACCOUNT_DATA_V1_BY_IGN = 'https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s?api_key='
+        self.__FETCH_MATCH_HISTORY_DATA = 'https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/%s/ids?start=0&count=10&api_key='
+        self.__FETCH_MATCH_DATA = 'https://americas.api.riotgames.com/lol/match/v5/matches/%s?api_key='
+
+        self.__API_KEY = os.getenv('RIOT_API_KEY')
 
     def checkRiotIDisValid(self, riotID) -> bool:
         componentID = (riotID[:riotID.index('#')], riotID[riotID.index('#') + 1:])
-        req = self.ACCOUNT_DATA_V1_BY_IGN % componentID
-        if requests.get(req + self.API_KEY).status_code == 200:
+        req = self.__ACCOUNT_DATA_V1_BY_IGN % componentID
+        if requests.get(req + self.__API_KEY).status_code == 200:
             return True
         return False
 
     def getPuuid(self, riotID) -> str:
         componentID = (riotID[:riotID.index('#')], riotID[riotID.index('#') + 1:])
-        req = self.ACCOUNT_DATA_V1_BY_IGN % componentID
-        response = requests.get(req + self.API_KEY)
+        req = self.__ACCOUNT_DATA_V1_BY_IGN % componentID
+        response = requests.get(req + self.__API_KEY)
         return response.json().get('puuid')
+
+    def getMatchHistory(self, riotID) -> list:
+        puuid = self.getPuuid(riotID)
+        req = self.__FETCH_MATCH_HISTORY_DATA % puuid
+        response = requests.get(req + self.__API_KEY)
+        return response.json()
+
+    def getMatchData(self, matchID):
+        req = self.__FETCH_MATCH_DATA % matchID
+        response = requests.get(req + self.__API_KEY)
+        return response.json()
