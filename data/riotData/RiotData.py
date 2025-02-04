@@ -38,3 +38,10 @@ class RiotData:
         req = self.__FETCH_MATCH_DATA % matchID
         response = requests.get(req + self.__API_KEY)
         return response.json()
+
+    def checkIfMatchWon(self, response, riotID):
+        puuid = self.getPuuid(riotID)
+        for players in response.get("info").get("participants"):
+            if puuid in str(players):
+                return players.get("win")
+        return False
