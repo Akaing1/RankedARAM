@@ -28,9 +28,14 @@ class MatchData:
         response = requests.get(req + self.__API_KEY)
         return response.json()
 
-    def checkIfMatchWon(self, response, riotID):
+    def checkIfMatchWon(self, riotID, matchId):
+        response = self.getMatchData(matchId)
         puuid = self.__playerData.getPuuid(riotID)
         for players in response.get("info").get("participants"):
             if puuid in str(players):
                 return players.get("win")
         return False
+
+    def checkMatchTypeIsARAM(self, matchId):
+        response = self.getMatchData(matchId)
+        return response.get("info").get("gameMode") == "ARAM"
