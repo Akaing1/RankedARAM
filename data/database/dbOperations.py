@@ -15,7 +15,7 @@ class DBOperations:
     def __init__(self):
 
         self.__RANK = RankEnum.Rank
-        self.__INSERT = "INSERT INTO Player (Name, RiotID, LP, UserRank) VALUES (%s, %s, %s, %s)"
+        self.__INSERT = "INSERT INTO Player (Name, RiotID, LP, UserRank, Division) VALUES (%s, %s, %s, %s, %s)"
         self.__DELETE = "DELETE FROM Player WHERE Name = '%s'"
         self.__SELECT = "SELECT * FROM Player WHERE Name = '%s'"
         self.__UPDATE = "UPDATE Player SET LP = %s WHERE Name = '%s'"
@@ -35,7 +35,7 @@ class DBOperations:
 
     def registerUser(self, interaction, riotId) -> bool:
 
-        val = (str(interaction.user), riotId, 0, self.__RANK.IRON.value)
+        val = (str(interaction.user), riotId, 0, self.__RANK.IRON.value, 4)
         try:
             self.cursor.execute(self.__INSERT, val)
             self.db.commit()
