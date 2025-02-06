@@ -18,8 +18,7 @@ class UpdateUserData(commands.Cog):
 
     @app_commands.command(name="update_lp", description="updates user current LP status")
     async def updateLPStatus(self, interaction):
-        # TO DO: call riot api to get match history here <------
-        if updateLPinDB(interaction, db, -4):
+        if updateLPinDB(interaction, db, getWinsSinceLastCheck(db.getRiotIDData(interaction))):
             await interaction.response.send_message(f"{interaction.user.mention}'s lp has been updated!")
         else:
             await interaction.response.send_message(f"{interaction.user.mention}'s lp had a problem while updating.")

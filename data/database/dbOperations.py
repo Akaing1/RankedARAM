@@ -19,6 +19,7 @@ class DBOperations:
         self.__DELETE = "DELETE FROM Player WHERE Name = '%s'"
         self.__SELECT = "SELECT * FROM Player WHERE Name = '%s'"
         self.__UPDATE = "UPDATE Player SET LP = %s WHERE Name = '%s'"
+        self.__SELECT_RIOTID = "SELECT RiotID FROM Player WHERE Name = '%s'"
 
         self.dbURL = os.getenv('DB_URL')
         self.dbHost = os.getenv('DB_HOST')
@@ -57,6 +58,16 @@ class DBOperations:
 
         try:
             self.cursor.execute(self.__SELECT % str(interaction.user))
+            userData = self.cursor.fetchall()
+            return userData
+        except UserAlreadyExistsException:
+            print('User does not exist')
+        return 'No data found for user'
+
+    def getRiotIDData(self, interaction):
+
+        try:
+            self.cursor.execute(self.__SELECT_RIOTID % str(interaction.user))
             userData = self.cursor.fetchall()
             return userData
         except UserAlreadyExistsException:

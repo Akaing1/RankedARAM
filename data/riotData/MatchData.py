@@ -39,3 +39,14 @@ class MatchData:
     def checkMatchTypeIsARAM(self, matchId):
         response = self.getMatchData(matchId)
         return response.get("info").get("gameMode") == "ARAM"
+
+    def getNumberOfWins(self, riotID):
+        matchHistory = self.getMatchHistory(riotID)
+        count = 0
+        for match in matchHistory:
+            if self.checkMatchTypeIsARAM(match):
+                if self.checkIfMatchWon(riotID, match):
+                    count += 1
+                else:
+                    count -= 1
+        return count
