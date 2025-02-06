@@ -87,6 +87,7 @@ class DBOperations:
         try:
             self.cursor.execute(self.__UPDATE % (lp, user))
             self.db.commit()
+            print('finished updating user lp')
             return True
         except UserAlreadyExistsException:
             print('User does not exist')

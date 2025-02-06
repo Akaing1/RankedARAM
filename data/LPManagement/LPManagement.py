@@ -16,4 +16,5 @@ def getWinsSinceLastCheck(riotId) -> int:
 
 
 def updateLPinDB(interaction, db, wins) -> bool:
+    print("...updating user lp...")
     return db.updateLP(str(interaction.user), getLPFromDB(interaction.user, db) + 15 * wins)
