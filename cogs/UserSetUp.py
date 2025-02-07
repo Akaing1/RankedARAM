@@ -1,11 +1,13 @@
+import logging
 import discord
 from discord import app_commands
 from discord.ext import commands
 from data.database.dbOperations import DBOperations
-from data.riotData.RiotData import RiotData
+from data.riotData.PlayerData import PlayerData
 
+logger = logging.getLogger()
 db = DBOperations()
-riotData = RiotData()
+playerData = PlayerData()
 
 
 class UserSetUp(commands.Cog):
@@ -14,12 +16,12 @@ class UserSetUp(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Users ready to be set up!")
+        logger.info("Users ready to be set up!")
 
     @app_commands.command(name="register", description="register user")
     @app_commands.describe(riotid="Enter RiotID here: ex. JohnDoe#NA1")
     async def register(self, interaction: discord.Interaction, riotid: str):
-        if riotData.checkRiotIDisValid(riotid):
+        if playerData.checkRiotIDisValid(riotid):
             if db.registerUser(interaction, riotid):
                 await interaction.response.send_message(f"{interaction.user.mention} has been registered successfully!")
             else:

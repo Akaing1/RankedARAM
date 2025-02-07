@@ -1,9 +1,12 @@
+import logging
+
 from discord import app_commands
 from discord.ext import commands
 
 from data.LPManagement.LPManagement import *
 from data.database.dbOperations import *
 
+logger = logging.getLogger()
 db = DBOperations()
 
 
@@ -14,12 +17,12 @@ class UpdateUserData(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Data ready to be updated!")
+        logger.info("Data ready to be updated!")
 
     @app_commands.command(name="update_lp", description="updates user current LP status")
     async def updateLPStatus(self, interaction):
-        # TO DO: call riot api to get match history here <------
-        if updateLPinDB(interaction, db, -4):
+        print(db.getRiotIDData(interaction)[0][0])
+        if updateLPinDB(interaction, db, getWinsSinceLastCheck(db.getRiotIDData(interaction)[0][0])):
             await interaction.response.send_message(f"{interaction.user.mention}'s lp has been updated!")
         else:
             await interaction.response.send_message(f"{interaction.user.mention}'s lp had a problem while updating.")
