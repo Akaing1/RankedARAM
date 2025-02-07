@@ -15,10 +15,11 @@ class DBOperations:
     def __init__(self):
 
         self.__RANK = RankEnum.Rank
-        self.__INSERT = "INSERT INTO Player (Name, RiotID, LP, UserRank) VALUES (%s, %s, %s, %s)"
+        self.__INSERT = "INSERT INTO Player (Name, RiotID, LP, UserRank, Division) VALUES (%s, %s, %s, %s, %s)"
         self.__DELETE = "DELETE FROM Player WHERE Name = '%s'"
         self.__SELECT = "SELECT * FROM Player WHERE Name = '%s'"
         self.__UPDATE = "UPDATE Player SET LP = %s WHERE Name = '%s'"
+        self.__SELECT_RIOTID = "SELECT RiotID FROM Player WHERE Name = '%s'"
 
         self.dbURL = os.getenv('DB_URL')
         self.dbHost = os.getenv('DB_HOST')
@@ -34,7 +35,7 @@ class DBOperations:
 
     def registerUser(self, interaction, riotId) -> bool:
 
-        val = (str(interaction.user), riotId, 0, self.__RANK.IRON.value)
+        val = (str(interaction.user), riotId, 0, self.__RANK.IRON.value, 4)
         try:
             self.cursor.execute(self.__INSERT, val)
             self.db.commit()
@@ -63,6 +64,16 @@ class DBOperations:
             print('User does not exist')
         return 'No data found for user'
 
+    def getRiotIDData(self, interaction):
+
+        try:
+            self.cursor.execute(self.__SELECT_RIOTID % str(interaction.user))
+            userData = self.cursor.fetchall()
+            return userData
+        except UserAlreadyExistsException:
+            print('User does not exist')
+        return 'No data found for user'
+
     def getLP(self, user):
         try:
             self.cursor.execute(self.__SELECT % user)
@@ -76,6 +87,7 @@ class DBOperations:
         try:
             self.cursor.execute(self.__UPDATE % (lp, user))
             self.db.commit()
+            print('finished updating user lp')
             return True
         except UserAlreadyExistsException:
             print('User does not exist')
