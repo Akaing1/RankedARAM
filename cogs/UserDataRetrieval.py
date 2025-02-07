@@ -1,9 +1,12 @@
+import logging
+
 from discord import app_commands
 from discord.ext import commands
 
 from data.LPManagement.LPManagement import *
 from data.database.dbOperations import *
 
+logger = logging.getLogger()
 db = DBOperations()
 
 
@@ -14,7 +17,7 @@ class UserDataRetrieval(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Data ready to be retrieved!")
+        logger.info("Data ready to be retrieved!")
 
     @app_commands.command(name="get_data", description="gets user data from db")
     async def getData(self, interaction):

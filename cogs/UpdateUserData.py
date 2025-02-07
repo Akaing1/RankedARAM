@@ -1,9 +1,12 @@
+import logging
+
 from discord import app_commands
 from discord.ext import commands
 
 from data.LPManagement.LPManagement import *
 from data.database.dbOperations import *
 
+logger = logging.getLogger()
 db = DBOperations()
 
 
@@ -14,7 +17,7 @@ class UpdateUserData(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Data ready to be updated!")
+        logger.info("Data ready to be updated!")
 
     @app_commands.command(name="update_lp", description="updates user current LP status")
     async def updateLPStatus(self, interaction):

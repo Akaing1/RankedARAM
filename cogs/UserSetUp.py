@@ -1,9 +1,11 @@
+import logging
 import discord
 from discord import app_commands
 from discord.ext import commands
 from data.database.dbOperations import DBOperations
 from data.riotData.PlayerData import PlayerData
 
+logger = logging.getLogger()
 db = DBOperations()
 playerData = PlayerData()
 
@@ -14,7 +16,7 @@ class UserSetUp(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("Users ready to be set up!")
+        logger.info("Users ready to be set up!")
 
     @app_commands.command(name="register", description="register user")
     @app_commands.describe(riotid="Enter RiotID here: ex. JohnDoe#NA1")
