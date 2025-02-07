@@ -1,27 +1,47 @@
+import asyncio
+import logging
+
 import discord
-import os
-from dotenv import load_dotenv
 from discord.ext import commands
-from commands import getPoints
-from commands.getPoints import getLPFromUser
+
+from data.database.dbOperations import *
 
 bot = commands.Bot(command_prefix=".", intents=discord.Intents.all())
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger()
+
 load_dotenv()
+db = DBOperations()
+botToken = os.getenv('DISCORD_TOKEN')
 
 
 @bot.event
 async def on_ready():
-    print("Booted up")
+    logger.info("Booted up")
+
+    try:
+        synced_commands = await bot.tree.sync()
+        logger.info(f"Synced {len(synced_commands)} commands.")
+    except Exception as e:
+        logger.info("An error with syncing application commands has occurred: ", e)
 
 
-@bot.command()
-async def getLP(ctx):
-    await ctx.send(getLPFromUser(ctx))
-
-@bot.command()
-async def test(ctx):
-    await ctx.send(f"test, {ctx.author.mention}")
+@bot.tree.command(name="test", description="test")
+async def test(interaction: discord.Interaction):
+    await interaction.response.send_message(f"{interaction.user.mention} test")
 
 
-botToken = os.getenv('DISCORD_TOKEN')
-bot.run(botToken)
+async def load():
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            await bot.load_extension(f"cogs.{filename[:-3]}")
+
+
+async def main():
+    async with bot:
+        await load()
+        await bot.start(botToken)
+
+
+asyncio.run(main())
